@@ -135,13 +135,14 @@ Creates config if absent and adds default scripts.
 
 `cleanc` ships built-in command templates for common tools/frameworks in `src/built-ins.ts`:
 
-- `install`
-- `turbo`
-- `wrangler`
-- `svelte`
-- `vite`
-- `storybook`
-- `next`
+- Frameworks: `next`, `nuxt`, `svelte`, `astro`, `remix`, `angular`
+- Build tools: `vite`, `webpack`, `rollup`, `parcel`, `esbuild`, `swc`
+- Testing: `vitest`, `jest`, `playwright`, `cypress`
+- Docs/UI: `storybook`, `docusaurus`
+- Monorepo/task: `turbo`, `nx`
+- Infra: `wrangler`, `serverless`, `sst`
+- Package managers: `pnpm-store`, `npm-cache`, `yarn-cache`, `bun-cache`
+- Core: `install`
 
 These are surfaced by `init` and docs. Runtime does not silently inject tool presets.
 
