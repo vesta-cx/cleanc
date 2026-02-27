@@ -57,4 +57,88 @@ export const BUILT_IN_COMMANDS: CleanCommandsMap = {
     include: [".next"],
     tags: ["cache", "next"],
   },
+  nuxt: {
+    include: [".nuxt", ".output"],
+    tags: ["cache", "nuxt", "framework"],
+  },
+  astro: {
+    include: [".astro"],
+    tags: ["cache", "astro", "framework"],
+  },
+  remix: {
+    include: [".cache/remix"],
+    tags: ["cache", "remix", "framework"],
+  },
+  angular: {
+    include: [".angular"],
+    tags: ["cache", "angular", "framework"],
+  },
+  webpack: {
+    include: ["node_modules/.cache/webpack", ".cache/webpack"],
+    tags: ["cache", "webpack", "build"],
+  },
+  rollup: {
+    include: [".rollup.cache", "node_modules/.cache/rollup"],
+    tags: ["cache", "rollup", "build"],
+  },
+  parcel: {
+    include: [".parcel-cache"],
+    tags: ["cache", "parcel", "build"],
+  },
+  esbuild: {
+    include: [".esbuild", "node_modules/.cache/esbuild"],
+    tags: ["cache", "esbuild", "build"],
+  },
+  swc: {
+    include: [".swc", "node_modules/.cache/swc"],
+    tags: ["cache", "swc", "build"],
+  },
+  vitest: {
+    include: [".vitest"],
+    tags: ["cache", "vitest", "test"],
+  },
+  jest: {
+    include: [".jest-cache", "node_modules/.cache/jest"],
+    tags: ["cache", "jest", "test"],
+  },
+  playwright: {
+    include: ["playwright-report", "test-results"],
+    tags: ["playwright", "test", "artifacts"],
+  },
+  cypress: {
+    include: ["cypress/screenshots", "cypress/videos"],
+    tags: ["cypress", "test", "artifacts"],
+  },
+  docusaurus: {
+    include: [".docusaurus"],
+    tags: ["docusaurus", "docs", "cache"],
+  },
+  nx: {
+    include: [".nx", "node_modules/.cache/nx"],
+    tags: ["nx", "monorepo", "cache"],
+  },
+  serverless: {
+    include: [".serverless"],
+    tags: ["serverless", "infra", "artifacts"],
+  },
+  sst: {
+    include: [".sst"],
+    tags: ["sst", "infra", "cache"],
+  },
+  "pnpm-store": {
+    include: [".pnpm-store"],
+    tags: ["pnpm", "package-manager", "cache"],
+  },
+  "npm-cache": {
+    include: [".npm"],
+    tags: ["npm", "package-manager", "cache"],
+  },
+  "yarn-cache": {
+    include: [".yarn/cache", ".yarn/unplugged"],
+    tags: ["yarn", "package-manager", "cache"],
+  },
+  "bun-cache": {
+    include: [".bun/install/cache"],
+    tags: ["bun", "package-manager", "cache"],
+  },
 };
