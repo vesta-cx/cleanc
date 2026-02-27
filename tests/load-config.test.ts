@@ -21,28 +21,37 @@ describe("loadConfig", () => {
   it("loads default config when no config file exists", async () => {
     const config = await loadConfig(tempDir);
 
-    expect(config.clean).toEqual([".turbo", ".wrangler", ".svelte-kit", "dist"]);
-    expect(config.installClean).toEqual([".turbo", ".wrangler", ".svelte-kit", "dist", "node_modules"]);
-    expect(config.buildClean).toEqual([".turbo", ".wrangler", ".svelte-kit", "dist"]);
-    expect(config.devClean).toEqual([".turbo", ".wrangler", ".svelte-kit", "dist"]);
+    expect(config.defaults.include).toEqual([]);
+    expect(config.defaults.exclude).toEqual([]);
+    expect(config.commands).toEqual({});
+    expect(config.configDir).toEqual(tempDir);
   });
 
-  it("loads config from .cleancrc.json", async () => {
+  it("loads include/exclude config from .cleancrc.json", async () => {
     const configPath = path.join(tempDir, ".cleancrc.json");
     writeFileSync(
       configPath,
       JSON.stringify({
-        clean: [".custom", "dist"],
-        installClean: [".custom", "dist", "node_modules"],
+        include: [".global-cache/**"],
+        exclude: ["**/*.tmp"],
+        dryRun: true,
+        tags: ["global"],
+        commands: {
+          turbo: { include: [".turbo/**"], tags: ["cache"] },
+          abcd: { include: [".cache-abcd/**"], mode: "contentsOnly" },
+        },
       })
     );
 
     const config = await loadConfig(tempDir);
 
-    expect(config.clean).toEqual([".custom", "dist"]);
-    expect(config.installClean).toEqual([".custom", "dist", "node_modules"]);
-    expect(config.buildClean).toEqual([".turbo", ".wrangler", ".svelte-kit", "dist"]); // defaults
-    expect(config.devClean).toEqual([".turbo", ".wrangler", ".svelte-kit", "dist"]); // defaults
+    expect(config.defaults.include).toEqual([".global-cache/**"]);
+    expect(config.defaults.exclude).toEqual(["**/*.tmp"]);
+    expect(config.defaults.dryRun).toBe(true);
+    expect(config.defaults.tags).toEqual(["global"]);
+    expect(config.commands.turbo?.include).toEqual([".turbo/**"]);
+    expect(config.commands.turbo?.tags).toEqual(["cache"]);
+    expect(config.commands.abcd?.mode).toBe("contentsOnly");
   });
 
   it("loads config from package.json cleanc key", async () => {
@@ -52,15 +61,18 @@ describe("loadConfig", () => {
       JSON.stringify({
         name: "test",
         cleanc: {
-          clean: [".build"],
+          include: [".build/**"],
+          commands: {
+            turbo: { include: [".turbo/**"] },
+          },
         },
       })
     );
 
     const config = await loadConfig(tempDir);
 
-    expect(config.clean).toEqual([".build"]);
-    expect(config.installClean).toContain("node_modules"); // default
+    expect(config.defaults.include).toEqual([".build/**"]);
+    expect(config.commands.turbo?.include).toEqual([".turbo/**"]);
   });
 
   it("supports backward compatibility with vesta:clean", async () => {
@@ -77,6 +89,40 @@ describe("loadConfig", () => {
 
     const config = await loadConfig(tempDir);
 
-    expect(config.clean).toEqual([".legacy"]);
+    expect(config.defaults.include).toEqual([".legacy"]);
+  });
+
+  it("supports backward compatibility with legacy command keys", async () => {
+    const configPath = path.join(tempDir, ".cleancrc.json");
+    writeFileSync(
+      configPath,
+      JSON.stringify({
+        clean: [".legacy-global"],
+        installClean: [".legacy-install", "node_modules"],
+        buildClean: [".legacy-build"],
+        devClean: [".legacy-dev"],
+      })
+    );
+
+    const config = await loadConfig(tempDir);
+
+    expect(config.defaults.include).toEqual([".legacy-global"]);
+    expect(config.commands.install?.include).toEqual([".legacy-install", "node_modules"]);
+    expect(config.commands["build:clean"]?.include).toEqual([".legacy-build"]);
+    expect(config.commands["dev:clean"]?.include).toEqual([".legacy-dev"]);
+  });
+
+  it("resolves config directory from nested config files", async () => {
+    const nested = path.join(tempDir, "nested");
+    mkdirSync(nested, { recursive: true });
+    writeFileSync(
+      path.join(nested, ".cleancrc.json"),
+      JSON.stringify({
+        include: ["./dist/**"],
+      })
+    );
+
+    const config = await loadConfig(nested);
+    expect(config.configDir).toEqual(nested);
   });
 });
