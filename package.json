@@ -1,0 +1,47 @@
+{
+  "name": "cleanc",
+  "version": "0.1.0",
+  "description": "Clean build outputs and cache directories with Prettier-style config discovery and per-command support",
+  "license": "MIT",
+  "author": "vesta",
+  "type": "module",
+  "bin": {
+    "cleanc": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist/**/*.?(d.)?([cm])[jt]s?(on?([c5]))"
+  ],
+  "scripts": {
+    "clean": "cleanc clean",
+    "build:clean": "pnpm run clean && pnpm run build",
+    "dev:clean": "pnpm run clean && pnpm run dev",
+    "install:clean": "pnpm run clean && node -e \"try{require('fs').rmSync(require('path').join(process.cwd(),'node_modules'),{recursive:true,force:true})}catch(_){}\" && pnpm i",
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "format": "prettier --write . --ignore-path ../../.prettierignore",
+    "lint": "prettier --check . --ignore-path ../../.prettierignore && eslint .",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest",
+    "prepublishOnly": "pnpm run build"
+  },
+  "dependencies": {
+    "cosmiconfig": "^9.0.0",
+    "rimraf": "^5.0.0"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^4.0.18",
+    "tsup": "^8.5.1",
+    "vitest": "^4.0.18"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
