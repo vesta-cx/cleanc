@@ -52,6 +52,21 @@ describe("initCleanc", () => {
     });
   });
 
+  it("keeps init output aligned with all built-ins", async () => {
+    await initCleanc({
+      cwd: tempDir,
+      tools: Object.keys(BUILT_IN_COMMANDS),
+      promptForBuiltIns: false,
+    });
+
+    const config = JSON.parse(readFileSync(path.join(tempDir, ".cleancrc.json"), "utf-8")) as {
+      include?: string[];
+      commands?: Record<string, { include: string[] }>;
+    };
+
+    expect(config.commands).toEqual(BUILT_IN_COMMANDS);
+  });
+
   it("throws when an unknown built-in is provided", async () => {
     await expect(
       initCleanc({ cwd: tempDir, tools: ["definitely-not-real"], promptForBuiltIns: false })
