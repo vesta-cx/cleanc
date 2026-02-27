@@ -3,6 +3,7 @@
 
 **/.tsup
 **/tsup
+**/.turbo
 
 **/coverage
 **/.coverage
