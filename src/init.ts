@@ -2,10 +2,16 @@
 
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
+import { BUILT_IN_COMMANDS } from "./built-ins.js";
+import { createInterface } from "node:readline";
+import { stdin as input, stdout as output } from "node:process";
+import type { CleanCommandsMap } from "./built-ins.js";
 
 export interface InitOptions {
   cwd?: string;
   skipDeps?: boolean;
+  tools?: string[];
+  promptForBuiltIns?: boolean;
 }
 
 /**
@@ -47,16 +53,69 @@ function hasCleanConfig(cwd: string): boolean {
 /**
  * Create default .cleancrc.json config.
  */
-function createDefaultConfig(cwd: string): void {
+const pickBuiltIns = (names: string[]): CleanCommandsMap => {
+  const selected: CleanCommandsMap = {};
+  for (const name of names) {
+    const template = BUILT_IN_COMMANDS[name];
+    if (!template) {
+      const available = Object.keys(BUILT_IN_COMMANDS).sort().join(", ");
+      throw new Error(`Unknown built-in "${name}". Available built-ins: ${available}`);
+    }
+    selected[name] = {
+      ...template,
+      include: [...template.include],
+      exclude: template.exclude ? [...template.exclude] : undefined,
+      tags: template.tags ? [...template.tags] : undefined,
+      protect: template.protect ? [...template.protect] : undefined,
+    };
+  }
+  return selected;
+};
+
+const promptForBuiltIns = async (): Promise<CleanCommandsMap> => {
+  if (!input.isTTY || !output.isTTY) {
+    return pickBuiltIns(["install"]);
+  }
+
+  const rl = createInterface({ input, output });
+  const selected: string[] = [];
+
+  try {
+    console.log("Select built-in commands to include in .cleancrc.json");
+    console.log("Press Enter to accept the default shown in brackets.");
+
+    for (const name of Object.keys(BUILT_IN_COMMANDS)) {
+      const defaultYes = name === "install";
+      const answer = (
+        await new Promise<string>((resolve) => {
+          rl.question(`- include "${name}"? ${defaultYes ? "[Y/n]" : "[y/N]"} `, resolve);
+        })
+      )
+        .trim()
+        .toLowerCase();
+      const include = answer === "" ? defaultYes : answer === "y" || answer === "yes";
+      if (include) {
+        selected.push(name);
+      }
+    }
+  } finally {
+    rl.close();
+  }
+
+  return pickBuiltIns(selected);
+};
+
+function createDefaultConfig(cwd: string, commands: CleanCommandsMap): void {
   if (hasCleanConfig(cwd)) {
     return; // Don't overwrite existing config
   }
 
   const config = {
-    clean: [".turbo", ".wrangler", ".svelte-kit", "dist"],
-    installClean: [".turbo", ".wrangler", ".svelte-kit", "dist", "node_modules"],
-    buildClean: [".turbo", ".wrangler", ".svelte-kit", "dist"],
-    devClean: [".turbo", ".wrangler", ".svelte-kit", "dist"],
+    include: [],
+    exclude: [],
+    report: "summary",
+    protect: [".git/**", "pnpm-lock.yaml", "package-lock.json", "yarn.lock"],
+    commands,
   };
 
   const configPath = path.join(cwd, ".cleancrc.json");
@@ -99,11 +158,18 @@ function addScripts(cwd: string): void {
  */
 export async function initCleanc(options: InitOptions = {}): Promise<void> {
   const cwd = options.cwd ?? process.cwd();
+  const shouldPrompt = options.promptForBuiltIns ?? true;
+
+  const selectedBuiltIns = options.tools
+    ? pickBuiltIns(options.tools)
+    : shouldPrompt
+      ? await promptForBuiltIns()
+      : pickBuiltIns(["install"]);
 
   console.log(`Initializing cleanc in ${cwd}`);
 
   // Create default config if none exists
-  createDefaultConfig(cwd);
+  createDefaultConfig(cwd, selectedBuiltIns);
 
   // Add scripts to package.json
   try {
