@@ -1,9 +1,8 @@
 {
   "schema": "https://json.schemastore.org/tsconfig",
-  "extends": "../../packages/config/src/typescript/tsconfig.base.json",
+  "extends": "../../packages/config/src/typescript/tsconfig.tsup.json",
   "include": [
-    "src/**/*.ts",
-    "tests/**/*.ts"
+    "src/**/*.ts"
   ],
   "exclude": [
     "dist",
@@ -14,6 +13,7 @@
     "emitDeclarationOnly": true,
     "declarationDir": "dist/",
     "outDir": "dist/",
-    "rootDir": "src/"
+    "rootDir": "src/",
+    "types": ["node"]
   }
 }

@@ -13,10 +13,12 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    }
+    },
+    "./schema": "./schema/cleancrc.schema.json"
   },
   "files": [
-    "dist/**/*.?(d.)?([cm])[jt]s?(on?([c5]))"
+    "dist/**/*.?(d.)?([cm])[jt]s?(on?([c5]))",
+    "schema/cleancrc.schema.json"
   ],
   "scripts": {
     "clean": "cleanc clean",
@@ -37,6 +39,7 @@
     "rimraf": "^5.0.0"
   },
   "devDependencies": {
+    "@types/node": "^22.0.0",
     "@vitest/coverage-v8": "^4.0.18",
     "tsup": "^8.5.1",
     "vitest": "^4.0.18"
