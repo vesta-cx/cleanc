@@ -6,6 +6,5 @@
 **/.turbo
 
 **/coverage
-**/.coverage
 
 **/node_modules
