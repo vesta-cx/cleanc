@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { initCleanc } from "../src/init.js";
+import { initClean } from "../src/init.js";
 import { BUILT_IN_COMMANDS } from "../src/built-ins.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -25,13 +25,13 @@ afterEach(() => {
 	rmSync(tempDir, { recursive: true, force: true });
 });
 
-describe("initCleanc", () => {
+describe("initClean", () => {
 	it("defaults to install built-in when not interactive", async () => {
-		await initCleanc({ cwd: tempDir });
+		await initClean({ cwd: tempDir });
 
 		const config = JSON.parse(
 			readFileSync(
-				path.join(tempDir, ".cleancrc.json"),
+				path.join(tempDir, ".cleanrc.json"),
 				"utf-8",
 			),
 		) as {
@@ -46,7 +46,7 @@ describe("initCleanc", () => {
 	});
 
 	it("uses explicit built-ins without prompting", async () => {
-		await initCleanc({
+		await initClean({
 			cwd: tempDir,
 			tools: ["install", "turbo"],
 			promptForBuiltIns: false,
@@ -54,7 +54,7 @@ describe("initCleanc", () => {
 
 		const config = JSON.parse(
 			readFileSync(
-				path.join(tempDir, ".cleancrc.json"),
+				path.join(tempDir, ".cleanrc.json"),
 				"utf-8",
 			),
 		) as {
@@ -69,7 +69,7 @@ describe("initCleanc", () => {
 	});
 
 	it("keeps init output aligned with all built-ins", async () => {
-		await initCleanc({
+		await initClean({
 			cwd: tempDir,
 			tools: Object.keys(BUILT_IN_COMMANDS),
 			promptForBuiltIns: false,
@@ -77,7 +77,7 @@ describe("initCleanc", () => {
 
 		const config = JSON.parse(
 			readFileSync(
-				path.join(tempDir, ".cleancrc.json"),
+				path.join(tempDir, ".cleanrc.json"),
 				"utf-8",
 			),
 		) as {
@@ -90,7 +90,7 @@ describe("initCleanc", () => {
 
 	it("throws when an unknown built-in is provided", async () => {
 		await expect(
-			initCleanc({
+			initClean({
 				cwd: tempDir,
 				tools: ["definitely-not-real"],
 				promptForBuiltIns: false,

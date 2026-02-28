@@ -27,8 +27,8 @@ describe("loadConfig", () => {
 		expect(config.configDir).toEqual(tempDir);
 	});
 
-	it("loads include/exclude config from .cleancrc.json", async () => {
-		const configPath = path.join(tempDir, ".cleancrc.json");
+	it("loads include/exclude config from .cleanrc.json", async () => {
+		const configPath = path.join(tempDir, ".cleanrc.json");
 		writeFileSync(
 			configPath,
 			JSON.stringify({
@@ -60,13 +60,13 @@ describe("loadConfig", () => {
 		expect(config.commands.abcd?.mode).toBe("contentsOnly");
 	});
 
-	it("loads config from package.json cleanc key", async () => {
+	it("loads config from package.json clean key", async () => {
 		const packageJsonPath = path.join(tempDir, "package.json");
 		writeFileSync(
 			packageJsonPath,
 			JSON.stringify({
 				name: "test",
-				cleanc: {
+				clean: {
 					include: [".build/**"],
 					commands: {
 						turbo: {
@@ -101,7 +101,7 @@ describe("loadConfig", () => {
 	});
 
 	it("supports backward compatibility with legacy command keys", async () => {
-		const configPath = path.join(tempDir, ".cleancrc.json");
+		const configPath = path.join(tempDir, ".cleanrc.json");
 		writeFileSync(
 			configPath,
 			JSON.stringify({
@@ -134,7 +134,7 @@ describe("loadConfig", () => {
 		const nested = path.join(tempDir, "nested");
 		mkdirSync(nested, { recursive: true });
 		writeFileSync(
-			path.join(nested, ".cleancrc.json"),
+			path.join(nested, ".cleanrc.json"),
 			JSON.stringify({
 				include: ["./dist/**"],
 			}),

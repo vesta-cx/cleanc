@@ -7,13 +7,13 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-describe("cleancrc schema", () => {
+describe("cleanrc schema", () => {
 	it("is valid JSON with expected top-level keys", () => {
 		const schemaPath = path.join(
 			__dirname,
 			"..",
 			"schema",
-			"cleancrc.schema.json",
+			"cleanrc.schema.json",
 		);
 		const schema = JSON.parse(
 			readFileSync(schemaPath, "utf-8"),
