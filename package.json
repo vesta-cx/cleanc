@@ -1,5 +1,5 @@
 {
-  "name": "@mia-cx/cleanc",
+  "name": "@mia-cx/clean",
   "version": "0.1.0",
   "description": "Clean build outputs and cache directories with Prettier-style config discovery and per-command support",
   "keywords": [
@@ -27,19 +27,19 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
-    "./schema": "./schema/cleancrc.schema.json"
+    "./schema": "./schema/cleanrc.schema.json"
   },
   "bin": {
-    "cleanc": "./dist/cli.js"
+    "clean": "./dist/cli.js"
   },
   "files": [
     "dist/**/*.?(d.)?([cm])[jt]s?(on?([c5]))",
-    "schema/cleancrc.schema.json"
+    "schema/cleanrc.schema.json"
   ],
   "scripts": {
     "build": "tsup",
     "build:clean": "pnpm run clean && pnpm run build",
-    "clean": "cleanc clean",
+    "clean": "clean",
     "dev": "tsup --watch",
     "dev:clean": "pnpm run clean && pnpm run dev",
     "format": "prettier --write .",
