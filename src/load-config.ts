@@ -185,18 +185,18 @@ const normalizeCommands = (
 export async function loadConfig(
 	cwd: string = process.cwd(),
 ): Promise<NormalizedConfig> {
-	const explorer = cosmiconfig("cleanc", {
+const explorer = cosmiconfig("clean", {
 		searchPlaces: [
-			".cleancrc",
-			".cleancrc.json",
-			".cleancrc.yaml",
-			".cleancrc.yml",
-			".cleancrc.cjs",
-			".cleancrc.mjs",
-			".cleancrc.js",
-			"cleanc.config.cjs",
-			"cleanc.config.mjs",
-			"cleanc.config.js",
+			".cleanrc",
+			".cleanrc.json",
+			".cleanrc.yaml",
+			".cleanrc.yml",
+			".cleanrc.cjs",
+			".cleanrc.mjs",
+			".cleanrc.js",
+			"clean.config.cjs",
+			"clean.config.mjs",
+			"clean.config.js",
 			"package.json",
 		],
 	});

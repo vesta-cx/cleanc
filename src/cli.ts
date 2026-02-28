@@ -4,7 +4,7 @@
 
 import { loadConfig } from "./load-config.js";
 import { runClean, type RunOptions } from "./run.js";
-import { initCleanc } from "./init.js";
+import { initClean } from "./init.js";
 import type { CleanMode, CleanReportMode, CleanStrategy } from "./built-ins.js";
 
 interface ParsedArgs {
@@ -244,7 +244,7 @@ async function main(): Promise<void> {
 
 	try {
 		if (parsed.isInit) {
-			await initCleanc({
+			await initClean({
 				cwd: parsed.cwd,
 				tools: parsed.tools,
 				promptForBuiltIns: !parsed.noPrompt,

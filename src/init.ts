@@ -25,37 +25,37 @@ function _detectPackageManager(cwd: string): "pnpm" | "npm" | "yarn" {
 }
 
 /**
- * Check if cleanc config exists.
+ * Check if clean config exists.
  */
 function hasCleanConfig(cwd: string): boolean {
 	// Check for rc files
 	const rcFiles = [
-		".cleancrc",
-		".cleancrc.json",
-		".cleancrc.yaml",
-		".cleancrc.yml",
-		".cleancrc.cjs",
-		".cleancrc.mjs",
-		".cleancrc.js",
+		".cleanrc",
+		".cleanrc.json",
+		".cleanrc.yaml",
+		".cleanrc.yml",
+		".cleanrc.cjs",
+		".cleanrc.mjs",
+		".cleanrc.js",
 	];
 	if (rcFiles.some((f) => existsSync(path.join(cwd, f)))) return true;
 
-	// Check for cleanc.config.*
+	// Check for clean.config.*
 	const configFiles = [
-		"cleanc.config.cjs",
-		"cleanc.config.mjs",
-		"cleanc.config.js",
+		"clean.config.cjs",
+		"clean.config.mjs",
+		"clean.config.js",
 	];
 	if (configFiles.some((f) => existsSync(path.join(cwd, f)))) return true;
 
-	// Check package.json for cleanc key
+	// Check package.json for clean key
 	try {
 		const packageJsonPath = path.join(cwd, "package.json");
 		if (existsSync(packageJsonPath)) {
 			const pkg = JSON.parse(
 				readFileSync(packageJsonPath, "utf-8"),
 			);
-			if (pkg.cleanc) return true;
+			if (pkg.clean) return true;
 		}
 	} catch {
 		// Ignore
@@ -65,7 +65,7 @@ function hasCleanConfig(cwd: string): boolean {
 }
 
 /**
- * Create default .cleancrc.json config.
+ * Create default .cleanrc.json config.
  */
 const pickBuiltIns = (names: string[]): CleanCommandsMap => {
 	const selected: CleanCommandsMap = {};
@@ -106,7 +106,7 @@ const promptForBuiltIns = async (): Promise<CleanCommandsMap> => {
 
 	try {
 		console.log(
-			"Select built-in commands to include in .cleancrc.json",
+			"Select built-in commands to include in .cleanrc.json",
 		);
 		console.log(
 			"Press Enter to accept the default shown in brackets.",
@@ -157,9 +157,9 @@ function createDefaultConfig(cwd: string, commands: CleanCommandsMap): void {
 		commands,
 	};
 
-	const configPath = path.join(cwd, ".cleancrc.json");
+	const configPath = path.join(cwd, ".cleanrc.json");
 	writeFileSync(configPath, JSON.stringify(config, null, 2));
-	console.log(`Created: .cleancrc.json`);
+	console.log(`Created: .cleanrc.json`);
 }
 
 /**
@@ -170,10 +170,10 @@ function addScripts(cwd: string): void {
 	const pkg = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
 
 	const scriptsToAdd = {
-		"clean": "cleanc clean",
-		"install:clean": "cleanc install:clean && pnpm i",
-		"build:clean": "cleanc build:clean && pnpm run build",
-		"dev:clean": "cleanc dev:clean && pnpm run dev",
+		"clean": "clean",
+		"install:clean": "clean install:clean && pnpm i",
+		"build:clean": "clean build:clean && pnpm run build",
+		"dev:clean": "clean dev:clean && pnpm run dev",
 	};
 
 	// Only add scripts if they're missing
@@ -197,9 +197,9 @@ function addScripts(cwd: string): void {
 }
 
 /**
- * Initialize cleanc in a project.
+ * Initialize clean in a project.
  */
-export async function initCleanc(options: InitOptions = {}): Promise<void> {
+export async function initClean(options: InitOptions = {}): Promise<void> {
 	const cwd = options.cwd ?? process.cwd();
 	const shouldPrompt = options.promptForBuiltIns ?? true;
 
@@ -212,7 +212,7 @@ export async function initCleanc(options: InitOptions = {}): Promise<void> {
 		selectedBuiltIns = pickBuiltIns(["install"]);
 	}
 
-	console.log(`Initializing cleanc in ${cwd}`);
+	console.log(`Initializing clean in ${cwd}`);
 
 	// Create default config if none exists
 	createDefaultConfig(cwd, selectedBuiltIns);
@@ -224,5 +224,5 @@ export async function initCleanc(options: InitOptions = {}): Promise<void> {
 		console.error("Failed to add scripts:", error);
 	}
 
-	console.log("✓ cleanc initialized");
+	console.log("✓ clean initialized");
 }

@@ -279,7 +279,7 @@ const maybeReport = (summary: RunSummary, mode: CleanReportMode): void => {
 		return;
 	}
 	console.log(
-		`cleanc: commands=${summary.executedCommands.join(",") || "(global)"} matched=${summary.matchedTargets} removed=${summary.removedTargets} protected=${summary.skippedProtected} errors=${summary.errors.length}`,
+`clean: commands=${summary.executedCommands.join(",") || "(global)"} matched=${summary.matchedTargets} removed=${summary.removedTargets} protected=${summary.skippedProtected} errors=${summary.errors.length}`,
 	);
 };
 
@@ -409,7 +409,7 @@ export async function runClean(
 		!(options.ignoreErrors ?? config.defaults.ignoreErrors)
 	) {
 		throw new Error(
-			`cleanc completed with ${summary.errors.length} error(s).`,
+			`clean completed with ${summary.errors.length} error(s).`,
 		);
 	}
 }
