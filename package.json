@@ -1,5 +1,5 @@
 {
-  "name": "cleansr",
+  "name": "mia-cx/cleanc",
   "version": "0.1.0",
   "description": "Clean build outputs and cache directories with Prettier-style config discovery and per-command support",
   "license": "MIT",
