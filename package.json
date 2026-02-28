@@ -46,5 +46,21 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "keywords": [
+    "clean",
+    "build",
+    "cache",
+    "monorepo",
+    "prettier-style",
+    "config"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vesta-cx/cleanc.git"
+  },
+  "homepage": "https://github.com/vesta-cx/cleanc#readme",
+  "bugs": {
+    "url": "https://github.com/vesta-cx/cleanc/issues"
   }
 }
