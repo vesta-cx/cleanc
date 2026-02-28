@@ -1,14 +1,14 @@
 <!-- @format -->
 
-# cleanc
+# clean
 
 Clean files and directories using include/exclude globs with command and tag selection.
 
 ## Features
 
-- Prettier-style config discovery (`.cleancrc*`, `cleanc.config.*`, or `package.json#cleanc`)
+- Prettier-style config discovery (`.cleanrc*`, `clean.config.*`, or `package.json#clean`)
 - Global + per-command matching (`include` / `exclude`)
-- Dynamic commands (`cleanc turbo`, `cleanc storybook`, `cleanc abcd`, etc.)
+- Dynamic commands (`clean turbo`, `clean storybook`, `clean abcd`, etc.)
 - Tag selection (`--tags`) with default union semantics
 - Runtime controls (`mode`, `dryRun`, `confirm`, `interactive`, `verbose`, `ignoreErrors`, `protect`, `strategy`, `force`, `report`)
 - Path traversal protection
@@ -17,33 +17,33 @@ Clean files and directories using include/exclude globs with command and tag sel
 ## Installation
 
 ```bash
-pnpm i -D cleanc
+pnpm i -D clean
 ```
 
 ## Quick Start
 
 ```bash
-cleanc init
+clean init
 ```
 
-`init` creates `.cleancrc.json` and adds common scripts if missing. By default, `init` prompts you to choose which built-ins to include when running in an interactive terminal.
+`init` creates `.cleanrc.json` and adds common scripts if missing. By default, `init` prompts you to choose which built-ins to include when running in an interactive terminal.
 
 ## Configuration
 
 ### Config lookup order
 
-1. `.cleancrc`, `.cleancrc.json`, `.cleancrc.yaml`, `.cleancrc.yml`
-2. `.cleancrc.cjs`, `.cleancrc.mjs`, `.cleancrc.js`
-3. `cleanc.config.cjs`, `cleanc.config.mjs`, `cleanc.config.js`
-4. `package.json` under `cleanc`
+1. `.cleanrc`, `.cleanrc.json`, `.cleanrc.yaml`, `.cleanrc.yml`
+2. `.cleanrc.cjs`, `.cleanrc.mjs`, `.cleanrc.js`
+3. `clean.config.cjs`, `clean.config.mjs`, `clean.config.js`
+4. `package.json` under `clean`
 
 First match wins (no merge across files).
 
-### `.cleancrc.json`
+### `.cleanrc.json`
 
 ```json
 {
-  "$schema": "https://unpkg.com/cleanc/schema",
+  "$schema": "https://unpkg.com/@mia-cx/clean/schema",
   "include": [".cache/global/**"],
   "exclude": ["**/*.log"],
   "report": "summary",
@@ -73,13 +73,13 @@ First match wins (no merge across files).
 ## CLI
 
 ```bash
-cleanc [command] [options]
+clean [command] [options]
 ```
 
 ### Behavior
 
-- `cleanc` => run global entry only
-- `cleanc <command>` => run global + command entry
+- `clean` => run global entry only
+- `clean <command>` => run global + command entry
 - unknown command => fail with available command names
 - `--tags=a,b` => run entries with ANY matching tag (union)
 - `command + --tags` => union by default; pass `--tag-intersect` for intersection behavior
@@ -88,15 +88,15 @@ cleanc [command] [options]
 ### Examples
 
 ```bash
-cleanc
-cleanc turbo
-cleanc install
-cleanc --tags=cache,build
-cleanc turbo --tags=cache                # union behavior
-cleanc turbo --tags=cache --tag-intersect
-cleanc turbo --include=.turbo/** --exclude=**/*.log
-cleanc assets --mode=contentsOnly --dry-run --verbose
-cleanc --cwd=packages/my-app --report=json
+clean
+clean turbo
+clean install
+clean --tags=cache,build
+clean turbo --tags=cache                # union behavior
+clean turbo --tags=cache --tag-intersect
+clean turbo --include=.turbo/** --exclude=**/*.log
+clean assets --mode=contentsOnly --dry-run --verbose
+clean --cwd=packages/my-app --report=json
 ```
 
 ### Useful runtime flags
@@ -120,9 +120,9 @@ cleanc --cwd=packages/my-app --report=json
 ### Special command
 
 ```bash
-cleanc init
-cleanc init --tools=install,turbo,wrangler
-cleanc init --no-prompt
+clean init
+clean init --tools=install,turbo,wrangler
+clean init --no-prompt
 ```
 
 Creates config if absent and adds default scripts.
@@ -134,7 +134,7 @@ Creates config if absent and adds default scripts.
 
 ## Built-ins
 
-`cleanc` ships built-in command templates for common tools/frameworks in `src/built-ins.ts`:
+`clean` ships built-in command templates for common tools/frameworks in `src/built-ins.ts`:
 
 - Frameworks: `next`, `nuxt`, `svelte`, `astro`, `remix`, `angular`
 - Build tools: `vite`, `webpack`, `rollup`, `parcel`, `esbuild`, `swc`
@@ -153,11 +153,11 @@ Use:
 
 ```json
 {
-  "$schema": "https://unpkg.com/cleanc/schema"
+  "$schema": "https://unpkg.com/@mia-cx/clean/schema"
 }
 ```
 
-Schema file in package: `schema/cleancrc.schema.json`.
+Schema file in package: `schema/cleanrc.schema.json`.
 
 ## Backward Compatibility
 
@@ -177,7 +177,7 @@ Legacy keys are still accepted and normalized:
 ## API
 
 ```ts
-import { loadConfig, runClean } from "cleanc";
+import { loadConfig, runClean } from "@mia-cx/clean";
 
 const config = await loadConfig(process.cwd());
 await runClean(config, { command: "turbo", tags: ["cache"], dryRun: true });
