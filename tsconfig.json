@@ -1,6 +1,6 @@
 {
   "schema": "https://json.schemastore.org/tsconfig",
-  "extends": "../../packages/config/src/typescript/tsconfig.tsup.json",
+  "extends": "@vesta-cx/config/typescript/tsup",
   "include": [
     "src/**/*.ts"
   ],
