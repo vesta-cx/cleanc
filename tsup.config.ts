@@ -3,24 +3,24 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-  cjsInterop: true,
-  clean: true,
+	cjsInterop: true,
+	clean: true,
 
-  entry: {
-    index: "./src/index.ts",
-    cli: "./src/cli.ts",
-  },
-  external: [],
+	entry: {
+		index: "./src/index.ts",
+		cli: "./src/cli.ts",
+	},
+	external: [],
 
-  dts: true,
+	dts: true,
 
-  format: ["cjs", "esm"],
+	format: ["cjs", "esm"],
 
-  outDir: "dist/",
+	outDir: "dist/",
 
-  splitting: false,
-  target: ["esnext"],
-  treeshake: "recommended",
+	splitting: false,
+	target: ["esnext"],
+	treeshake: "recommended",
 
-  tsconfig: "./tsconfig.json",
+	tsconfig: "./tsconfig.json",
 });
