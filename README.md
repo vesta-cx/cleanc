@@ -1,3 +1,5 @@
+<!-- @format -->
+
 # cleanc
 
 Clean files and directories using include/exclude globs with command and tag selection.
@@ -24,8 +26,7 @@ pnpm i -D cleanc
 cleanc init
 ```
 
-`init` creates `.cleancrc.json` and adds common scripts if missing.
-By default, `init` prompts you to choose which built-ins to include when running in an interactive terminal.
+`init` creates `.cleancrc.json` and adds common scripts if missing. By default, `init` prompts you to choose which built-ins to include when running in an interactive terminal.
 
 ## Configuration
 
