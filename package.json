@@ -27,8 +27,8 @@
     "install:clean": "pnpm run clean && node -e \"try{require('fs').rmSync(require('path').join(process.cwd(),'node_modules'),{recursive:true,force:true})}catch(_){}\" && pnpm i",
     "build": "tsup",
     "dev": "tsup --watch",
-    "format": "prettier --write . --ignore-path ../../.prettierignore",
-    "lint": "prettier --check . --ignore-path ../../.prettierignore && eslint .",
+    "format": "prettier --write .",
+    "lint": "prettier --check . && eslint .",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
@@ -40,7 +40,10 @@
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
+    "@vesta-cx/config": "^1.0.0",
     "@vitest/coverage-v8": "^4.0.18",
+    "eslint": "^8.57.1",
+    "prettier": "^3.8.1",
     "tsup": "^8.5.1",
     "vitest": "^4.0.18"
   },
